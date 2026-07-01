@@ -1,41 +1,35 @@
-# 📈 Apple Inc. (AAPL) Stock Price Prediction using LSTM
+# 📈 Apple Inc. (AAPL) Advanced Stock Price Prediction using Multivariate LSTM
 
-This project implements a deep learning model to predict the daily closing price of Apple Inc. (AAPL) based on historical data. The project utilizes a **Long Short-Term Memory (LSTM)** network, which is specifically designed to capture long-term dependencies in time-series data.
+This project implements a professional-grade deep learning model to predict the daily closing price of Apple Inc. (AAPL). Unlike basic models that only use the closing price, this project utilizes a **Multivariate LSTM (Long Short-Term Memory)** network to capture complex market patterns.
 
-## 🚀 Project Overview
-The goal is to predict the next day's closing price using a sliding window of the previous 30 days. The model was developed using **PyTorch** and trained on historical data fetched from the **Yahoo Finance API**.
+## 🚀 Project Evolution: From Univariate to Multivariate
+Initially, the project used a Univariate approach (only Close Price). To increase accuracy and robustness, I upgraded the model to a **Multivariate Architecture**, incorporating **Feature Engineering** to provide the model with market context.
 
-## 🛠️ Tech Stack
-- **Language:** Python 3.x
-- **Deep Learning Framework:** PyTorch
-- **Data Handling:** Pandas, NumPy
-- **Data Source:** yfinance (Yahoo Finance API)
-- **Preprocessing:** Scikit-learn (MinMaxScaler)
-- **Visualization:** Matplotlib
-- **Environment:** Google Colab (T4 GPU / CUDA)
+## 🛠️ Technical Indicators (Feature Engineering)
+To give the model a "trader's perspective," I integrated 6 key features:
+1. **Closing Price:** The primary target variable.
+2. **Trading Volume:** To confirm the strength of price movements.
+3. **SMA (Simple Moving Average - 50 Days):** To identify the long-term trend.
+4. **EMA (Exponential Moving Average - 50 Days):** To capture fast-reacting trend changes.
+5. **RSI (Relative Strength Index - 14 Days):** To detect overbought and oversold conditions (Momentum).
+6. **Volatility (50-Day Std Dev):** To measure market instability and risk.
 
 ## 🧠 Model Architecture
-- **LSTM Layers:** Stacked LSTM (2 Layers) to extract deep temporal patterns.
-- **Prediction Head:** Linear layer to map LSTM hidden states to a single price value.
-- **Loss Function:** Mean Squared Error (MSELoss).
-- **Optimizer:** Adam Optimizer.
-- **Data Loading:** PyTorch `DataLoader` with batch shuffling to prevent model collapse.
+- **Model:** Stacked LSTM (2 Layers)
+- **Input Shape:** (Batch, 30 Days Window, 6 Features)
+- **Hidden Layers:** 128 units for higher complexity handling.
+- **Optimization:** Adam Optimizer with Mean Squared Error (MSE) loss.
+- **Scaling:** MinMaxScaler used to normalize diverse feature ranges (e.g., Volume vs RSI).
 
-## 🛠️ Challenges & Solutions
-During development, I encountered and solved two major machine learning hurdles:
-
-1. **Underfitting (Flat Line Prediction):** 
-   - *Issue:* Initially, the model predicted the median price (flat line).
-   - *Solution:* Switched from `L1Loss` (MAE) to `MSELoss`, which penalizes larger errors more heavily, forcing the model to follow the trend.
-
-2. **Model Collapse (Global Average):** 
-   - *Issue:* The model stopped learning and predicted the global average of the entire 5-year history.
-   - *Solution:* Implemented a `DataLoader` with `shuffle=True`. This broke the chronological rigidity and forced the model to learn the mathematical relationship between the 30-day window and the target price.
+## 🛠️ Challenges Solved
+- **Fixed Model Collapse:** Resolved the "Flat Line" prediction issue by implementing a shuffled DataLoader and optimizing the loss function.
+- **Reduced Lag:** Increased the hidden layer capacity to 128 units to better track high-volatility peaks.
+- **Data Leakage Prevention:** Ensured proper temporal splitting to maintain the integrity of the test set.
 
 ## 📈 Results
-The final model successfully tracks the actual stock price movements with high accuracy, effectively capturing the volatility and trends of AAPL.
+The model successfully tracks the actual stock price with high precision, capturing both the overall trend and short-term volatility of AAPL.
 
 ## ⚙️ How to Run
-1. Open the `.ipynb` file in **Google Colab**.
-2. Set the Runtime to **GPU (T4)**.
+1. Open the `.ipynb` file in Google Colab.
+2. Set Runtime to **GPU (T4)**.
 3. Run all cells sequentially.
